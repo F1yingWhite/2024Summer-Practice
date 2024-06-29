@@ -6,9 +6,9 @@ spring:
     name: metro
 
   redis:
-    host: 127.0.0.1
+    host: 58.87.105.2
     port: 6379
-    password: 123456
+    password: BeiJingJiaoTongDaXue1234567890
     database: 0
     timeout: 5000
 #    lettuce:
@@ -29,16 +29,16 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    name: '@123.60.53.131'
-    url: jdbc:mysql://123.60.53.131:3306/NewYork?serverTimezone=GMT
-    username: 'xyh'
-    password: '2023ShiXun'
+    name: '@58.87.105.2'
+    url: jdbc:mysql://58.87.105.2:3306/railway?serverTimezone=GMT
+    username: 'root'
+    password: 'BeiJingJiaoTongDaXue1234567890'
 
   mail:
     protocol: smtps
     host: smtp.qq.com
-    username: 845796811@qq.com
-    password: mytgnpzfynrcbded
+    username: 3314266280@qq.com
+    password: nsgvmpswumckcjfc
     default-encoding: UTF-8
 
   jackson:

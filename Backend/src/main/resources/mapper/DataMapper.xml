@@ -17,7 +17,16 @@
         AND dateTime = #{dateTime}
     </select>
 
-<!--    //查询某时间某站点真实数据-->
+<!--    &lt;!&ndash;    //查询所有真实数据-->
+<!--    List<Map<String,String>> TrueDataAtTime(@Param("dateTime") String dateTime);&ndash;&gt;-->
+<!--    <select id="TrueDataAtTime" resultType="Map">-->
+<!--    SELECT *-->
+<!--    FROM TrueData a, new_all_station_info b-->
+<!--    WHERE a.id = b.`Unique ID`-->
+<!--    AND a.`DateTime` = #{dateTime}-->
+<!--    </select>-->
+
+    <!--    //查询某时间某站点真实数据-->
 <!--    List<Map<String,String>> TrueDataAtTimeStation(@Param("dateTime") String dateTime,@Param("GTFSid") String GTFSid);-->
     <select id="TrueDataAtTimeStation" resultType="Map">
         SELECT GTFS_Stop_ID, dateTime, tEntries, tExits
