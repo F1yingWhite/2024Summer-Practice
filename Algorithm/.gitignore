@@ -1,0 +1,4 @@
+LSTM/*.csv
+*/.vscode
+*/.idea
+**/*.csv
