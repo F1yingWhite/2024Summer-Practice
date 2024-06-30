@@ -30,7 +30,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: '@58.87.105.2'
-    url: jdbc:mysql://58.87.105.2:3306/NewYork?serverTimezone=GMT
+    url: jdbc:mysql://58.87.105.2:3306/railway?serverTimezone=GMT
     username: 'root'
     password: 'BeiJingJiaoTongDaXue1234567890'
 
