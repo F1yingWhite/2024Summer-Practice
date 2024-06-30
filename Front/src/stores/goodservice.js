@@ -9,6 +9,9 @@ const M_TRAIN_SHUFFLE = ["M21", "M20", "M19", "M18", "M16", "M14", "M13", "M12",
 
 // Trains passing through these stations can be physically in the opposite direction of trains that are running in the same direction
 // The keys represent such stations, the values represent subsequent stations that if a train stops there, we would need to reverse its direction of the keys
+// M_TRAIN_SHUFFLE：定义了一些特殊处理的站点。
+// STATIONS_TO_FLIP_DIRECTIONS：定义了需要翻转方向的站点对。
+// routeIds：定义了一些线路ID。
 const STATIONS_TO_FLIP_DIRECTIONS = {
   "D14": "F12",
   "D43": "D42",
@@ -20,6 +23,8 @@ const routeIds = [
   'D', 'B', 'M', 'J', 'Z', 'R', 'N', 'Q', 'W', 'G', 'H', 'FS', 'GS', "L", "SI"
 ];
 
+// 初始化车站数据。从station_details.json文件中导入车站数据。
+// initStations函数初始化车站数据，包括每个车站的ID和方向上的停靠站集合。
 import stationData from '../data/station_details.json'
 function initStations() {
   let stations = {}
@@ -33,6 +38,9 @@ function initStations() {
   return stations
 }
 
+
+// getUpdateData和getParsedStations：从goodservice模块中导入两个函数。
+// 定义Pinia存储useMapStore，其中包含列车信息、车站信息和一些响应式数据。
 import { getUpdateData, getParsedStations } from '@/lib/axios/goodservice'
 
 export const useMapStore = defineStore('goodservice', () => {
@@ -48,6 +56,7 @@ export const useMapStore = defineStore('goodservice', () => {
 
   const offsets = ref({})
 
+  // shouldReverseDirection：判断是否需要翻转方向。
   function shouldReverseDirection(fromRouteId, toRouteId, stationId) {
     return Object.keys(STATIONS_TO_FLIP_DIRECTIONS).some((targetStation) => {
       const triggerStation = STATIONS_TO_FLIP_DIRECTIONS[targetStation];
@@ -59,6 +68,7 @@ export const useMapStore = defineStore('goodservice', () => {
     })
   }
 
+  // calculateOffsets：计算每条线路的偏移量，避免线路重叠。
   function calculateOffsets() {
     const _offsets = {};
     const _results = {};
@@ -107,6 +117,7 @@ export const useMapStore = defineStore('goodservice', () => {
     offsets.value = _results
   }
 
+  // processRoutings：处理列车的路线数据，计算每条路线经过的站点、方向、终点站和换乘站。
   function processRoutings() {
     // stations = getParsedStations(stops)
     // console.log(stops)
@@ -149,6 +160,7 @@ export const useMapStore = defineStore('goodservice', () => {
         north: northRoutings,
         south: southRoutings
       }
+      // console.log("你好")
       // console.log(northRoutings, southRoutings)
       northRoutings.forEach((routing) => {
         _destinations.add(routing[routing.length - 1])
@@ -213,6 +225,7 @@ export const useMapStore = defineStore('goodservice', () => {
     transferStations.value = _transferStations
   }
 
+  // updateData：异步获取最新数据，并调用处理函数。
   async function updateData() {
     const res = await getUpdateData()
     trains = res.routes
@@ -225,6 +238,7 @@ export const useMapStore = defineStore('goodservice', () => {
     calculateOffsets()
   }
 
+  // findPath：递归查找从起点到终点的路径。
   function findPath(start, end, stepsTaken, stopsVisited) {
     // console.log(stations)
     if (calculatedPaths[`${start}-${end}`]) {
@@ -267,6 +281,7 @@ export const useMapStore = defineStore('goodservice', () => {
     return results
   }
 
+  // getRoutePath函数：获取某条路线的完整路径，调用findPath查找每个站点之间的路径。
   function getRoutePath(route) {
     // console.log('getRoutePath: ', route)
     const r = route.slice(0)
@@ -297,6 +312,7 @@ export const useMapStore = defineStore('goodservice', () => {
     return path
   }
 
+  // getRoutesGeoJson函数：生成路线的GeoJSON数据，包含每条路线的颜色、偏移量和路径坐标。
   async function getRoutesGeoJson(refreshData) {
     if (refreshData) {
       await updateData()
@@ -342,6 +358,7 @@ export const useMapStore = defineStore('goodservice', () => {
     return geojson
   }
 
+  // calculateTrainPositions函数：计算当前时间下每列车的位置，包括上一个和下一个站点以及预估到达时间。
   function calculateTrainPositions(currentTime) {
     // const _routingByDirection = routingByDirection.value
     let trainPositions = [];
@@ -454,6 +471,7 @@ export const useMapStore = defineStore('goodservice', () => {
     return trainPositions;
   }
 
+  // routingGeoJson函数：生成单条路线的GeoJSON路径数据，调用findPath查找路径。
   function routingGeoJson(routing) {
     const r = routing.slice(0);
 
@@ -480,6 +498,7 @@ export const useMapStore = defineStore('goodservice', () => {
     return path;
   }
 
+  // getTrainPositionsGeoJson函数：生成当前列车位置的GeoJSON数据，使用 Turf.js 计算列车在轨道上的位置和方向。
   async function getTrainPositionsGeoJson(refreshData) {
     const trainPositionsObj = {};
     if (refreshData) {

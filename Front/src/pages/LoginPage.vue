@@ -4,6 +4,7 @@
 import { login, register, sendCode } from '../lib/axios/user'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import LocalCache from '@/utils/cache'
 const router = useRouter()
 
 import { useTokenStore } from '../stores/token'
@@ -74,6 +75,7 @@ function onLogin() {
     console.log(res.data.data.token)
     tokenStore.setToken(res.data.data.token)
     tokenStore.setPermission(res.data.data.permission)
+    LocalCache.setCache("currentUser", state.username)
     // onLoggedIn()
     router.push('/')
   }).catch((err) => {

@@ -67,11 +67,11 @@ ids = getIDS()
 import random
 
 conn = pymysql.connect(
-    host='123.60.53.131',
+    host='58.87.105.2',
     charset='utf8',
-    user='xyh',
-    password='2023ShiXun',
-    db='NewYork'
+    user='root',
+    password='BeiJingJiaoTongDaXue1234567890',
+    db='railway'
 )
 cursor = conn.cursor()
 '''
@@ -98,8 +98,8 @@ sql = "UPDATE TrueData SET isPredict = 0 WHERE STR_TO_DATE(dateTime, '%Y-%m-%d %
 cursor.execute(sql)
 conn.commit()
 
-entries_pre_path = '../model/entries/model_station'
-exits_pre_path = '../model/exits/model_station'
+entries_pre_path = './model/entries/model_station'
+exits_pre_path = './model/exits/model_station'
 for id in ids:
     '''
     if id == 11:
@@ -142,6 +142,10 @@ for id in ids:
 
     for i in range(8):
         t = result[i][2]
+        
+        # 将 datetime 对象转换为字符串
+        # t = t.strftime('%Y-%m-%d %H:%M:%S')
+        
         time_group = re.match(r'(.*)-(.*)-(.*) (.*):(.*):(.*)', t)
         Year = int(time_group.group(1))
         Month = int(time_group.group(2))
