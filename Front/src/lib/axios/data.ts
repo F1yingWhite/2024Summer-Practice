@@ -88,13 +88,14 @@ export async function getHeatMapGeoJson() {
   // console.log(res)
 
   const features = res.data.data.map((v: any) => {
-    const stationInfo = (stationData as any)[v['GTFS_Stop_ID']]
-    console.log(res.data.data)
-    console.log(stationInfo);
+    const stationInfo = (stationData as any)[v['Name']]
+    // console.log(res.data.data)
+    // console.log(stationInfo);
+    console.log(v)
     
     return {
       geometry: { coordinates: [stationInfo['longitude'], stationInfo['latitude']], type: 'Point' },
-      properties: { Entries: v['tEntries'], Exits: v['tExits'], id: v['GTFS_Stop_ID'] }
+      properties: { Entries: v['Entries'], Exits: v['Exits'], id: v['Name'] }
     }
   })
   // console.log(features)

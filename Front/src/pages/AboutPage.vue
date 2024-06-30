@@ -10,7 +10,7 @@
         <span>小</span>
         <span>队</span>
       </h2>
-      <h2 class="green ppC">组员有：xyh，xb，cyb，fwh，cjx，zml</h2>
+      <h2 class="green ppC">组员有：xyh，cj，zyc，zjn，zjj，zml</h2>
       <v-btn class="green" append-icon="$vuetify" stacked @click="addCount">
         Button
       </v-btn>

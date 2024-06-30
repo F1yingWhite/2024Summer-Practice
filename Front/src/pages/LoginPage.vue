@@ -107,10 +107,10 @@ const msg = ref('')
           <div class="greetings">
             <h1 class="green tw-text-center lg:tw-text-left">地铁客流量预测系统</h1>
             <h3 class="tw-text-center lg:tw-text-left">
-              <p>「虽是咸鱼，但也要挣扎」</p>
+              <p>「我又会生产阳光啦」</p>
               <p class="mt-2">
                 项目地址：
-                <a href="https://github.com/AzurIce/2023-BJTU-SummerPractice-Subway" target="_blank"
+                <a href="https://github.com/XuYiHan30319/2024Summer-Practice" target="_blank"
                   rel="noopener">Github</a>
               </p>
             </h3>

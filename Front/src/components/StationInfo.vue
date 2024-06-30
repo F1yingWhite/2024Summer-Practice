@@ -38,7 +38,7 @@ function updateData() {
       },
       tooltip: {},
       xAxis: {
-        data: res.map((v) => v.dateTime.replace(':00:00', '时')),
+        data: res.map((v) => v.DateTime.replace(':00:00', '时')),
         axisLabel: {
           rotate: 60
         }
@@ -48,12 +48,12 @@ function updateData() {
         {
           name: '出站人数',
           type: 'line',
-          data: res.map((v) => v.tExits)
+          data: res.map((v) => v.Exits)
         },
         {
           name: '入站人数',
           type: 'line',
-          data: res.map((v) => v.tEntries)
+          data: res.map((v) => v.Entries)
         }
       ]
     })

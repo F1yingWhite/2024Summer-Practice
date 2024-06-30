@@ -1,6 +1,6 @@
 <template>
       <main role="main" class="tbody">
-        <div aria-busy="true" aria-label="Loading, please wait." data-text="北京交通大学软件学院2023暑期实训项目" role="progressbar">
+        <div aria-busy="true" aria-label="Loading, please wait." data-text="北京交通大学软件学院2024暑期实训项目" role="progressbar">
         </div>
     </main>
 </template>

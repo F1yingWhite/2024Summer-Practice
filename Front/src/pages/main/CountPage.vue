@@ -160,7 +160,7 @@ export default {
             align: 'center',
           },
           xAxis: {
-            data: res.map((v) => v.dateTime.replace(':00:00', '时')),
+            data: res.map((v) => v.DateTime.replace(':00:00', '时')),
             axisLabel: {
               rotate: 60
             }
@@ -171,8 +171,8 @@ export default {
               type: 'bar',
               data: res.map((v) => {
                 return {
-                  x: v.dateTime.replace(':00:00', '时'),
-                  y: v.tExits
+                  x: v.DateTime.replace(':00:00', '时'),
+                  y: v.Exits
                 }
               })
             },
@@ -181,8 +181,8 @@ export default {
               type: 'bar',
               data: res.map((v) => {
                 return {
-                  x: v.dateTime.replace(':00:00', '时'),
-                  y: v.tEntries
+                  x: v.DateTime.replace(':00:00', '时'),
+                  y: v.Entries
                 }
               })
             }
@@ -195,7 +195,7 @@ export default {
             align: 'center',
           },
           xAxis: {
-            data: res.map((v) => v.dateTime.replace(':00:00', '时')),
+            data: res.map((v) => v.DateTime.replace(':00:00', '时')),
             axisLabel: {
               rotate: 60
             }
@@ -206,7 +206,7 @@ export default {
               type: 'line',
               data: res.map((v) => {
                 return {
-                  x: v.dateTime.replace(':00:00', '时'),
+                  x: v.DateTime.replace(':00:00', '时'),
                   y: v.tExits
                 }
               })
@@ -216,8 +216,8 @@ export default {
               type: 'line',
               data: res.map((v) => {
                 return {
-                  x: v.dateTime.replace(':00:00', '时'),
-                  y: v.tEntries
+                  x: v.DateTime.replace(':00:00', '时'),
+                  y: v.Entries
                 }
               })
             }

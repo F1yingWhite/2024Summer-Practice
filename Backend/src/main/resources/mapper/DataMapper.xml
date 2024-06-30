@@ -12,19 +12,17 @@
     List<Map<String,String>> TrueDataAtTime(@Param("dateTime") String dateTime);-->
     <select id="TrueDataAtTime" resultType="Map">
         SELECT *
-        FROM TrueData a, id_map b
-        WHERE a.id = b.id
-        AND dateTime = #{dateTime}
+        FROM new_all_station_info
+        WHERE dateTime = #{dateTime}
     </select>
 
 <!--    //查询某时间某站点真实数据-->
 <!--    List<Map<String,String>> TrueDataAtTimeStation(@Param("dateTime") String dateTime,@Param("GTFSid") String GTFSid);-->
     <select id="TrueDataAtTimeStation" resultType="Map">
-        SELECT GTFS_Stop_ID, dateTime, tEntries, tExits
-        FROM TrueData a, id_map b
-        WHERE a.id = b.id
-        AND dateTime = #{dateTime}
-        AND GTFS_Stop_ID = #{GTFSid}
+        SELECT Name, DateTime, Entries, Exits
+        FROM new_all_station_info
+        WHERE DateTime = #{dateTime}
+        AND Name = #{GTFSid}
     </select>
 
 <!--    //查询某站点最新预测数据-->
@@ -33,7 +31,7 @@
 <!--        SELECT GTFS_Stop_ID, dateTime, pEntries, pExits-->
 <!--        FROM PredictData a, id_map b-->
 <!--        WHERE a.id = b.id-->
-<!--        AND GTFS_Stop_ID = #{GTFSid}-->
+<!--        AND GTFS_Stop_ID = #{GTFSid }-->
 <!--    </select>-->
 
 <!--    //查询时间范围-->
