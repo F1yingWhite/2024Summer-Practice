@@ -22,17 +22,6 @@ function onLogout() {
 </script>
 
 <template>
-  <v-dialog v-model="donateDialog" width="300">
-    <v-card>
-      <v-img src="src/assets/showMeMoney.jpg" contain height="auto"></v-img>
-      <v-card-text>
-        我很可爱请给我钱
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="primary" block @click="donateDialog = false">Close</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
   <v-app-bar class="bar" :elevation="2"  image="src/assets/NavigationBar2.png" >
     <v-app-bar-nav-icon  @click="() => { router.push('/about') }">
       <img src="src/assets/NavigationBar-icon.png" alt="Custom Icon">
