@@ -11,15 +11,15 @@ spring:
     password: BeiJingJiaoTongDaXue1234567890
     database: 0
     timeout: 5000
-#    lettuce:
-#      pool:
-#        MaxTotal: 500 #最大连接数
-#        minIdle: 1
-#        maxWaitMillis: 5000
-#        maxIdle: 5
-#        testOnBorrow: true
-#        testOnReturn: true
-#        testWhileIdle: true
+    #    lettuce:
+    #      pool:
+    #        MaxTotal: 500 #最大连接数
+    #        minIdle: 1
+    #        maxWaitMillis: 5000
+    #        maxIdle: 5
+    #        testOnBorrow: true
+    #        testOnReturn: true
+    #        testWhileIdle: true
     jedis:
       pool:
         max-idle: 500
