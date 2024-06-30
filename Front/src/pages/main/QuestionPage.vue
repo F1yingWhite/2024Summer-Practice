@@ -5,7 +5,7 @@ import LocalCache from '@/utils/cache'
 import BgParticle from '../../components/BgParticle.vue'
 
 // 假设已经有用户登录信息
-const currentUser = LocalCache.getCache('currentUser') || { username: 'guest' }
+const currentUser = LocalCache.getCache('currentUser') || 'guest'
 
 const question = ref('')
 const answer = ref('')
