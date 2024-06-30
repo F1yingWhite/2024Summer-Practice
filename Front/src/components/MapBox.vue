@@ -122,7 +122,7 @@ function initMap() {
       paint: {
         'circle-color': '#dddddd',
         'circle-opacity': 0.7,
-        'circle-radius': 4
+        'circle-radius': 5
       }
     })
 

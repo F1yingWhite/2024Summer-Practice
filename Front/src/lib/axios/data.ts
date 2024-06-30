@@ -91,8 +91,6 @@ export async function getHeatMapGeoJson() {
     const stationInfo = (stationData as any)[v['GTFS_Stop_ID']]
     console.log(res.data.data)
     console.log(stationInfo);
-    console.log("我操你妈");
-    
     
     return {
       geometry: { coordinates: [stationInfo['longitude'], stationInfo['latitude']], type: 'Point' },

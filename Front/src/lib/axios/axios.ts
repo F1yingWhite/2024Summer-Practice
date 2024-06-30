@@ -6,6 +6,8 @@ import axios from 'axios'
 // const host = 'http://124.70.109.243:3308'
 const host = 'http://127.0.0.1:3308'
 
+// const host1 = 'http://59f7b8ba.r10.vip.cpolar.cn'
+
 export function get(url: string): Promise<any> {
   return new Promise((resolve, reject) => {
     axios
