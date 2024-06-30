@@ -16,7 +16,7 @@ with open(image_path, "rb") as image_file:
 data = {
     "history": [],
     "query": "图中有什么内容",
-    "image": image_base64,#可选
+    # "image": image_base64,#可选
 }
 
 
