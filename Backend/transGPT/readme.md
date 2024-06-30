@@ -1,4 +1,5 @@
 ## 介绍
+
 TransGPT-MM是基于开源的清华[VisualGLM-6B](https://github.com/THUDM/VisualGLM-6B)为backbone，在交通领域数据集上进行微调。
 
 由[SwissArmyTransformer](https://github.com/THUDM/SwissArmyTransformer)(简称sat) 库训练，这是一个支持Transformer灵活修改、训练的工具库，支持Lora、P-tuning等参数高效微调方法。
@@ -9,6 +10,7 @@ TransGPT-MM是基于开源的清华[VisualGLM-6B](https://github.com/THUDM/Visua
 | TransGPT-MM-6B-v1 | [DUOMO-Lab/TransGPT-MM-v1](https://huggingface.co/DUOMO-Lab/TransGPT-MM-v1) | 改进版本，通用性专用性更强|
 
 ## 环境配置
+
 ```
 pip install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
 # 最好再安装最新版的sat
@@ -18,9 +20,11 @@ pip install .
 ```
 
 ## 微调
+
 下载数据（暂未开放）得到collection文件夹
 
 运行如下命令进行训练：
+
 ```
 bash finetune/finetune_visualglm.sh
 ```
@@ -32,6 +36,7 @@ QLoRA：如果资源有限，可以考虑使用bash finetune/finetune_visualglm_
 P-tuning：可以将--use_lora替换为--use_ptuning，不过不推荐使用，除非模型应用场景非常固定。
 
 如果希望把LoRA部分的参数合并到原始的权重，可以运行如下代码：
+
 ```
 from finetune_visualglm import FineTuneVisualGLMModel
 import argparse
@@ -50,21 +55,28 @@ args.mode = 'inference'
 from sat.training.model_io import save_checkpoint
 save_checkpoint(1, model, None, None, args)
 ```
+
 合并后得到模型`merge_lora_p7_54000`
 
 ## 推理
+
 下载模型，存放在一定路径下。
+
 - 终端形式
+
 ```
 python cli_demo.py --from_pretrained your-model-path  --prompt_zh 图中的标志表示什么含义？
 # your-model-path 为的模型路径，比如TransGPT-MM-v1 或./PLM/TransGPT-MM-v1或merge_lora_p14_12000 
 ```
+
 ![终端示例](examples/cli.png)
 
 - 普通示例
+
 ```
 python example_sat.py
 ```
+
 ```
 import argparse
 from finetune_visualglm import FineTuneVisualGLMModel
@@ -93,19 +105,23 @@ print(response) # 当心中毒
 
 - Web Demo
 我们提供了一个基于[Gradio](https://www.gradio.app/)的网页版Demo，首先安装 Gradio：pip install gradio。然后执行:
+
 ```
 python web_demo.py
 ```
+
 程序会运行一个Web Server，并输出地址。在浏览器中打开输出的地址即可使用。（通过修改model/infer_util.py中的模型路径加载不同模型）
 
 ![web demo](examples/web.png)
 
 ## Demo
+
 [v1版本](https://huggingface.co/spaces/DUOMO-Lab/TransGPT-MM)
 
 ## 示例
 
 - 交通标志
+
 <p float="left">
     <img src="examples/example_bz1.png" style="width: 45%; margin: auto;">
 </p>
@@ -120,6 +136,7 @@ python web_demo.py
 </p>
 
 - 交通规则
+
 <p float="left">
     <img src="examples/example_tk4.png" style="width: 45%; margin: auto;">
 </p>
@@ -130,8 +147,8 @@ python web_demo.py
     <img src="examples/example_tk3.png" style="width: 45%; margin: auto;">
 </p>
 
-
 - 景点
+
 <p float="left">
     <img src="examples/example_jd1.png" style="width: 45%; margin: auto;">
 </p>
@@ -144,4 +161,3 @@ python web_demo.py
 <p float="left">
     <img src="examples/example_jd4.png" style="width: 45%; margin: auto;">
 </p>
-
