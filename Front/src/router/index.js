@@ -8,6 +8,7 @@ import HomePage from '@/pages/main/HomePage.vue'
 import CountPage from '@/pages/main/CountPage.vue'
 import AdminPage from '@/pages/main/AdminPage.vue'
 import WarningPage from '@/pages/main/WarningPage.vue'
+import QuestionPage from '@/pages/main/QuestionPage.vue'
 import { useTokenStore } from '@/stores/token'
 
 
@@ -49,6 +50,15 @@ const router = createRouter({
           path: '/warning',
           name: 'warning',
           component: WarningPage,
+          meta: {
+            requireAuth: true
+          },
+        },
+        // 问答页面路由
+        {
+          path: '/question',
+          name: 'question',
+          component: QuestionPage,
           meta: {
             requireAuth: true
           },
