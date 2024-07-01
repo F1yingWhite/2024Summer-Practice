@@ -143,6 +143,7 @@ export default {
   transform: translate(-0.75%, 10px);
 }
 .slider__pagination {
+  top:350px;
   position: absolute;
   bottom: 4vh;
   width: 100%;
