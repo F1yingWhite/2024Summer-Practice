@@ -101,7 +101,7 @@ const msg = ref('')
 
     <div class="lg:tw-grid lg:tw-grid-cols-2 lg:tw-p-8">
       <header>
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="200" height="200" />
+        <img alt="Vue logo" class="logo" src="@/assets/xiangrikui.png" width="200" height="200" />
 
         <div class="wrapper">
           <div class="greetings">
