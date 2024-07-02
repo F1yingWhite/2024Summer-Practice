@@ -1,2 +1,3 @@
-agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone
-MTA NYCT,MTA New York City Transit, http://www.mta.info,America/New_York,en,718-330-1234
+version https://git-lfs.github.com/spec/v1
+oid sha256:5001980d6088dc26cd271d9df131005e8549ee7481b54c8ac68da12d072f7582
+size 163
