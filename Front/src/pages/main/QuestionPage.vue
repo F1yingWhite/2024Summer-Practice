@@ -4,17 +4,16 @@ import { askQuestion } from '@/lib/axios/ask'
 import LocalCache from '@/utils/cache'
 import BgParticle from '../../components/BgParticle.vue'
 
-// 假设已经有用户登录信息
 const currentUser = LocalCache.getCache('currentUser') || 'guest'
 
 const question = ref('')
 const answer = ref('')
-const conversations = ref([]) // 存储不同的会话
-const selectedConversationIndex = ref(null) // 选择的会话索引
-const selectedImage = ref(null) // 存储选择的图片
-const imageBase64 = ref('') // 存储图片的base64编码
+const conversations = ref([])
+const selectedConversationIndex = ref(null)
+const selectedImage = ref(null)
+const imageBase64 = ref('')
+const isLoading = ref(false) // 加载状态
 
-// 页面加载时从 LocalStorage 中加载历史记录
 onMounted(() => {
   const storedConversations = LocalCache.getCache(`conversations_${currentUser}`)
   if (storedConversations) {
@@ -28,10 +27,9 @@ function submitQuestion() {
     return
   }
 
-  // 构建历史信息
-  const historyData = selectedConversationIndex.value !== null ? conversations.value[selectedConversationIndex.value].map(([q, a]) => [q, a]) : []
+  isLoading.value = true // 设置加载状态为true
 
-  // 构建请求数据
+  const historyData = selectedConversationIndex.value !== null ? conversations.value[selectedConversationIndex.value].map(([q, a]) => [q, a]) : []
   const data = {
     history: historyData,
     query: question.value,
@@ -40,41 +38,36 @@ function submitQuestion() {
 
   askQuestion(data)
     .then(response => {
-      console.log(response)
       const newAnswer = response.data.response
-      // 保存到历史记录
       if (selectedConversationIndex.value !== null) {
         conversations.value[selectedConversationIndex.value].push([question.value, newAnswer, imageBase64.value])
       } else {
         conversations.value.push([[question.value, newAnswer, imageBase64.value]])
         selectedConversationIndex.value = conversations.value.length - 1
       }
-      // 更新当前答案
       answer.value = newAnswer
-      // 清空问题输入框
       question.value = ''
-      // 清空图片
       selectedImage.value = null
       imageBase64.value = ''
-      // 存储在 LocalStorage
       LocalCache.setCache(`conversations_${currentUser}`, conversations.value)
     })
     .catch(err => {
       answer.value = '抱歉，无法获取答案，请稍后再试'
       console.log(err)
     })
+    .finally(() => {
+      isLoading.value = false // 设置加载状态为false
+    })
 }
 
-// 处理图片上传
 function handleImageUpload(event) {
   const file = event.target.files[0]
   if (file) {
     const reader = new FileReader()
     reader.onload = () => {
-      // 移除data:image/png;base64,前缀
       const base64Data = reader.result.split(',')[1]
       imageBase64.value = base64Data
-      selectedImage.value = reader.result // 用于预览
+      selectedImage.value = reader.result
     }
     reader.readAsDataURL(file)
   }
@@ -96,7 +89,6 @@ function deleteConversation(index) {
   } else if (selectedConversationIndex.value > index) {
     selectedConversationIndex.value--
   }
-  // 更新LocalStorage
   LocalCache.setCache(`conversations_${currentUser}`, conversations.value)
 }
 
@@ -110,11 +102,10 @@ function handleKeyPress(event) {
 <template>
   <v-row style="margin-top: 20px;">
     <v-col cols="12" md="1"></v-col>
-    <!-- 左侧会话历史 -->
     <v-col cols="12" md="2" class="leftHistory">
       <v-card>
         <v-card-title class="headline">会话历史</v-card-title>
-        <v-btn color="primary" block @click="createNewConversation">新建会话</v-btn>
+        <v-btn color="primary" block @click="createNewConversation" :disabled="isLoading">新建会话</v-btn>
         <v-card-text>
           <v-list dense>
             <v-list-item-group v-model="selectedConversationIndex" active-class="v-list-item--active">
@@ -134,7 +125,6 @@ function handleKeyPress(event) {
         </v-card-text>
       </v-card>
     </v-col>
-    <!-- 右侧问答部分 -->
     <v-col cols="12" md="8" class="rightAsk">
       <v-card class="d-flex flex-column" style="height: 80vh;">
         <v-card-title class="headline">交通问答</v-card-title>
@@ -158,7 +148,7 @@ function handleKeyPress(event) {
         <v-card-text style="position: sticky; bottom: 0; background: white;">
           <v-row>
             <v-col style="padding-bottom: 0">
-              <v-btn outlined @click="$refs.fileInput.click()">选择文件</v-btn>
+              <v-btn outlined @click="$refs.fileInput.click()" :disabled="isLoading">选择文件</v-btn>
               <input ref="fileInput" type="file" @change="handleImageUpload" style="display: none;" />
               <v-text-field
                 v-model="question"
@@ -166,16 +156,17 @@ function handleKeyPress(event) {
                 outlined
                 clearable
                 @keypress="handleKeyPress"
+                :disabled="isLoading"
               >
                 <template #append>
-                  <v-btn icon @click="submitQuestion">
-                    <v-icon>mdi-send</v-icon>
+                  <v-btn icon @click="submitQuestion" :disabled="isLoading">
+                    <v-icon v-if="!isLoading">mdi-send</v-icon>
+                    <v-progress-circular v-else indeterminate size="24"></v-progress-circular>
                   </v-btn>
                 </template>
               </v-text-field>
             </v-col>
           </v-row>
-          <!-- 图片预览 -->
           <v-row v-if="selectedImage">
             <v-col>
               <img :src="selectedImage" alt="Selected Image" style="max-width: 100%;" />
