@@ -1,3 +1,3 @@
-# BJTU2023暑期实训lly班第三小组后端
+# BJTU2024暑期实训
 
 ## Springboot + MyBatis Plus + MySQL

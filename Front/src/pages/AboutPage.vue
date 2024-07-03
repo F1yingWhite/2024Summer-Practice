@@ -1,23 +1,24 @@
 <template>
   <div class="about">
     <div class="con">
-      <v-btn icon="mdi-open-in-new" size="large" style="position: fixed;top: 3%;left: 3%; z-index: 3;" @click="exit()" ></v-btn>
+      <v-btn icon="mdi-open-in-new" size="large" style="position: fixed;top: 3%;right: 3%; z-index: 3;" @click="exit()" ></v-btn>
       <MTitleVue></MTitleVue>
       <h2 class="green jump">
-        <span>自</span>
-        <span>来</span>
-        <span>熟</span>
-        <span>小</span>
-        <span>队</span>
+        <span>我</span>
+        <span>又</span>
+        <span>会</span>
+        <span>生</span>
+        <span>产</span>
+        <span>阳</span>
+        <span>光</span>
+        <span>了</span>
       </h2>
-      <h2 class="green ppC">组员有：xyh，cj，zyc，zjn，zjj，zml</h2>
-      <v-btn class="green" append-icon="$vuetify" stacked @click="addCount">
-        Button
-      </v-btn>
-      <h1 class="green">你一共点击了{{ count }}次</h1>
+      <!-- <h2 class="green ppC">组员有：xyh，cj，zyc，zjn，zjj，zml</h2> -->
     </div>
     <SliderVue style="justify-content: center;width:100%;height: 50%"></SliderVue>
-
+    <div class="image-container">
+      <img src="src/assets/xiangrikui.png" style="height: 100px;" />
+    </div>
     <CommentColumnVue></CommentColumnVue>
   </div>
   
@@ -25,19 +26,12 @@
 
 <script setup>
 
-import { ref } from 'vue';
 import CommentColumnVue from '../components/CommentColumn.vue';
 import SliderVue from '../components/Slider.vue';
 import MTitleVue from '../components/MTitle.vue';
 
 import { useRouter } from 'vue-router'
 const router = useRouter()
-
-const count = ref(0);
-
-function addCount() {
-  count.value++;
-}
 
 function exit(){
   router.push('/login')
@@ -147,5 +141,13 @@ h2 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), -2px -2px 4px rgba(255, 255, 255, 0.5);
 }
 
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top:0;
+  left: 3%;
+}
 
 </style>

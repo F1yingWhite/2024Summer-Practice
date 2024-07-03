@@ -183,8 +183,8 @@ function initMap() {
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v10',
     maxBounds: [
-      [-74.309883, 40.48388],
-      [-73.677476, 40.909622]
+      [-74.509883, 40.48388],
+      [-73.377476, 40.909622]
     ],
     zoom: 9
   })
