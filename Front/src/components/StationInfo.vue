@@ -1,33 +1,26 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import station_details from '../data/station_details.json'
-import { getData } from '../lib/axios/data'
+import station_details from '../data/station_details.json';
+import { getData } from '../lib/axios/data';
+import * as echarts from 'echarts';
+import { useRouter } from 'vue-router';
 
-import * as echarts from 'echarts'
+const props = defineProps(['modelValue']);
+const emits = defineEmits(['update:modelValue']);
 
+const router = useRouter();
 
-const props = defineProps(['modelValue'])
-defineEmits(['update:modelValue'])
+const station = computed(() => station_details[props.modelValue] || {});
 
-// const selected = computed(() => (props.modelValue != ''))
-const station = computed(() => station_details[props.modelValue] || {})
-
-// const loading = ref(false)
 let mounted = false;
 function updateData() {
   if (myChart) {
-    myChart.dispose()
+    myChart.dispose();
   }
-  console.log(chart.value)
   myChart = echarts.init(chart.value);
-  
   myChart.showLoading();
-  // loading.value = true
   getData(props.modelValue).then((res) => {
-    // console.log(res)
     myChart.hideLoading();
-    // loading.value = false
-    // 绘制图表
     myChart.setOption({
       grid: {
         right: 0,
@@ -56,25 +49,42 @@ function updateData() {
           data: res.map((v) => v.Entries)
         }
       ]
-    })
-  })
+    });
+
+    // console.log(res[6].DateTime);
+    // console.log(res[6].Entries);
+    // console.log(res[6].Exits);
+    // Save station info to localStorage
+    const stationInfo = {
+      name: station.value.name,
+      id: props.modelValue,
+      latitude: station.value.latitude,
+      longitude: station.value.longitude,
+      borough: station.value.borough,
+      dateTime: res[6].DateTime,
+      entries: res[6].Entries,
+      exits: res[6].Exits
+    };
+    localStorage.setItem('selectedStation', JSON.stringify(stationInfo));
+  });
 }
 
-let myChart = null
-const chart = ref(null)
+let myChart = null;
+const chart = ref(null);
 watch(() => props.modelValue, (newValue) => {
-  console.log('newValue: ', newValue)
   if (newValue && mounted) {
-    console.log('updateData')
-    updateData()
+    updateData();
   }
-})
+});
 
 onMounted(() => {
-  mounted = true
-  updateData()
-})
+  mounted = true;
+  updateData();
+});
 
+const viewStation = (path) => {
+  router.push(path);
+};
 </script>
 
 <template>
@@ -83,9 +93,10 @@ onMounted(() => {
       <v-btn icon="mdi-arrow-left-thin" @click="() => { $emit('update:modelValue', '') }" size="small" />
       <span class="tw-ml-4">{{ station.name }}</span>
       <v-chip class="tw-ml-4">{{ props.modelValue }}</v-chip>
+      <v-btn @click="() => viewStation('/SingleSubway')" class="tw-mr-2">查看单站</v-btn>
+      <v-btn @click="() => viewStation('/DoubleSubway')">查看双站</v-btn>
     </div>
     <span class="tw-mt-2 tw-mb-2">Longitude: {{ station.longitude }}, Latitude: {{ station.latitude }}</span>
-    <!-- <v-progress-circular color="white" indeterminate size="64" v-if="loading">🫠</v-progress-circular> -->
     <div ref="chart" class="tw-w-full tw-mb-5" style="height: 400px;" />
   </div>
 </template>

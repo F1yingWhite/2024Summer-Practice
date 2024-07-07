@@ -332,11 +332,11 @@ const msg = ref('')
     <div class="tw-absolute tw-top-10 tw-left-10 tw-bg-white tw-p-2 tw-rounded tw-shadow tw-z-20" style="margin-left: 1200px">
       <label for="start">起点:</label>
       <input type="text" id="start" v-model="startLocation" placeholder="请输入起点名称" />
-      <button @click="selectingStartPoint = true">手动选择</button>
+      <v-btn @click="selectingStartPoint = true">手动选择</v-btn>
       <br />
       <label for="end">终点:</label>
       <input type="text" id="end" v-model="endLocation" placeholder="请输入终点名称" />
-      <button @click="selectingEndPoint = true">手动选择</button>
+      <v-btn @click="selectingEndPoint = true">手动选择</v-btn>
     </div>
     </div>
     <div id="map" class="tw-h-full tw-w-full" />

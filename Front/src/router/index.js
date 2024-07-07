@@ -9,7 +9,8 @@ import CountPage from '@/pages/main/CountPage.vue'
 import AdminPage from '@/pages/main/AdminPage.vue'
 import WarningPage from '@/pages/main/WarningPage.vue'
 import QuestionPage from '@/pages/main/QuestionPage.vue'
-import SubwayPage from '@/pages/main/SubwayPage.vue'
+import DoubleSubwayPage from '@/pages/main/DoubleSubwayPage.vue'
+import SingleSubwayPage from '@/pages/main/SingleSubwayPage.vue'
 import { useTokenStore } from '@/stores/token'
 
 
@@ -64,11 +65,17 @@ const router = createRouter({
             requireAuth: true
           },
         },
-        // 地铁页面路由
+        // 单边地铁页面路由
         {
-          path: '/subway',
-          name: 'subway',
-          component: SubwayPage,
+          path: '/singleSubway',
+          name: 'singleSubway',
+          component: SingleSubwayPage,
+        }, 
+        // 双边地铁页面路由
+        {
+          path: '/doubleSubway',
+          name: 'doubleSubway',
+          component: DoubleSubwayPage,
         }, 
       ]
     },

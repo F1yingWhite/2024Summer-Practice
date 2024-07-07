@@ -27,7 +27,7 @@ function onLogout() {
       <img src="src/assets/NavigationBar-icon.png" alt="Custom Icon">
     </v-app-bar-nav-icon>
     <!-- fire-circle -->
-    <v-toolbar-title>地铁客流量预测系统</v-toolbar-title>
+    <v-toolbar-title>大苹果交通</v-toolbar-title>
     <v-btn icon="mdi-bell-alert" @click="()=>{router.push('/warning')}" v-if="tokenStore.isGov()"></v-btn>
     <v-btn icon="mdi-map-search" @click="()=>{router.push('/')}"></v-btn>
     <!-- 添加问答页面按钮 -->

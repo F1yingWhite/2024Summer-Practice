@@ -1,160 +1,222 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+    import * as THREE from 'three'
+    // 导入轨道控制器
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    // 导入lil-gui
+    import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js' 
 
-const canvasRef = ref(null);
-const loadingProgress = ref(0);
-const loadingVisible = ref(true);
+    // 创建场景
+    const scene = new THREE.Scene();
 
-onMounted(() => {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
+    // 创建相机
+    const camera = new THREE.PerspectiveCamera(
+        45, // 视角
+        window.innerWidth / window.innerHeight, // 宽高比
+        0.1, // 近平面
+        1000 // 远平面
+    )
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.value });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+    // 创建渲染器
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-  // 相机位置
-  camera.position.set(0, 5, 10);
+    // 创建几何体
+    const geometry = new THREE.BufferGeometry();
+    const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    // // 使用坐标绘制
+    // const vertices = new Float32Array([
+    //     0, 0, 0,
+    //     1, 0, 0,
+    //     0, 1, 0,
 
-  // 世界坐标辅助器
-  const axesHelper = new THREE.AxesHelper(5);
-  scene.add(axesHelper);
+    //     1, 1, 0,
+    //     0, 1, 0,
+    //     1, 0, 0,
+    // ]);
+    // // 设置几何体的顶点位置
+    // geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    // 使用索引绘制
+    const vertices = new Float32Array([
+        0, 0, 0,
+        1, 0, 0,
+        0, 1, 0,
+        1, 1, 0,
+    ]);
+    // 设置几何体的顶点位置
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    // 设置几何体的顶点索引
+    const indexes = new Uint16Array([
+        0, 1, 2,
+        1, 3, 2,
+    ])
+    // 设置索引实现共用顶点
+    geometry.setIndex(new THREE.BufferAttribute(indexes, 1));
+    // 设置两个顶点组，形成两个材质
+    geometry.addGroup(0, 3, 0);
+    geometry.addGroup(3, 3, 1);
 
-  // 添加轨道控制
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; // 阻尼（惯性），体验更好
-  controls.dampingFactor = 0.05;
+    // 创建材质
+    // 父元素材质
+    const parentMaterial0 = new THREE.MeshBasicMaterial({
+        color: 0xff0000,
+        // wireframe: true,
+    });
+    const parentMaterial1 = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        // wireframe: true,
+    });
+    const parentMaterial2 = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        // wireframe: true,
+    });
+    const parentMaterial3 = new THREE.MeshBasicMaterial({
+        color: 0x00ffff,
+        // wireframe: true,
+    });
+    const parentMaterial4 = new THREE.MeshBasicMaterial({
+        color: 0xff00ff,
+        // wireframe: true,
+    });
+    const parentMaterial5 = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+        // wireframe: true,
+    });
+    const parentMaterial6 = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            // wireframe: true,
+    });
 
-  // 实例化rgbeLoader
-  const rgbeLoader = new RGBELoader();
-  rgbeLoader.load('/src/assets/texture/metro_noord_4k.hdr', function (envMap) {
-    // 设置球形映射
-    envMap.mapping = THREE.EquirectangularReflectionMapping;
-    // 设置环境贴图
-    scene.background = envMap;
-    scene.environment = envMap;
-  });
+    // 子元素材质
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        side: THREE.DoubleSide,
+        wireframe: true,
+    });
+    const material1 = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        side: THREE.DoubleSide,
+        // wireframe: true,
+    });
 
-  // 初始化加载管理器
-  const loadingManager = new THREE.LoadingManager();
-  loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
-    loadingVisible.value = true;
-    console.log('开始加载', url, itemsLoaded, itemsTotal);
-  };
-  loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
-    loadingProgress.value = (itemsLoaded / itemsTotal) * 100;
-    console.log(`加载进度: ${loadingProgress.value}%`);
-  };
-  loadingManager.onLoad = function () {
-    loadingVisible.value = false;
-    console.log('加载完成');
+    // 创建网格
+    let parentCube = new THREE.Mesh(cubeGeometry, [
+        parentMaterial0, 
+        parentMaterial1, 
+        parentMaterial2, 
+        parentMaterial3, 
+        parentMaterial4, 
+        parentMaterial5, 
+        parentMaterial6
+    ]);
+    const cube = new THREE.Mesh(geometry, [material, material1]);
+    parentCube.add(cube);
+    parentCube.position.set(-3, 0, 0)
+
+    // cube.position.x = 2;
+    cube.position.set(3, 0, 0);
+    // 设置立方体的放大
+    cube.scale.set(2, 2, 2);
+    // 绕着x轴旋转
+    // cube.rotation.set(Math.PI / 4, 0, 0, 'XYZ');
+    // 添加到场景中
+    scene.add(parentCube);
+
+    // 设置相机位置
+    camera.position.z = 5;
+    camera.position.y = 2;
+    camera.position.x = 2;
+    camera.lookAt(0, 0, 0);
+
+    // 添加世界坐标辅助器
+    const axesHelper = new THREE.AxesHelper(5);
+    scene.add(axesHelper);
+
+    // 添加轨道控制器
+    const controls = new OrbitControls(camera, renderer.domElement);
+    // 设置带阻尼的惯性
+    controls.enableDamping = true;
+    // 设置阻尼系数
+    controls.dampingFactor = 0.05;
+    // // 设置自动旋转
+    // controls.autoRotate = true;
+    // // 设置自动旋转速度
+    // controls.autoRotateSpeed = 1;
+    // // 设置相机距离原点的最远距离
+    // controls.minDistance = 2;
+    // // 设置相机距离原点的最远距离
+    // controls.maxDistance = 10;
+
+    // 渲染函数
+    function animate() {
+        controls.update();
+        requestAnimationFrame(animate);
+        // 旋转
+        // cube.rotation.x += 0.01;
+        // cube.rotation.y += 0.01;
+        // 渲染
+        renderer.render(scene, camera);
+    }
     animate();
-  };
-  loadingManager.onError = function (url) {
-    console.error('加载出错', url);
-  };
 
-  // 加载 gltf 模型
-  const loader = new GLTFLoader(loadingManager);
-  const modelPath = new URL('/src/assets/model/metro/SubwayStation.glb', import.meta.url).href;
-  
-  // // 加载 draco 压缩模型
-  // const dracoLoader = new DRACOLoader();
-  // dracoLoader.setDecoderPath('/public/draco/');
-  // loader.setDRACOLoader(dracoLoader);
-  
-  loader.load(modelPath, function (gltf) {
-    // 设置位置
-    // gltf.scene.position.set(-14, 10, 14);
-    // 添加到场景
-    scene.add(gltf.scene);
-  }, undefined, function (error) {
-    console.error(error);
-  });
+    // 监听窗口变化
+    window.addEventListener('resize', () => {
+        // 更新摄像头宽高比
+        camera.aspect = window.innerWidth / window.innerHeight;
+        // 更新摄像机的投影矩阵
+        camera.updateProjectionMatrix();
+        // 更新渲染器宽高比
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // 设置渲染器的像素比
+        renderer.setPixelRatio(window.devicePixelRatio);
+    });
 
-  // 渲染循环
-  function animate() {
-    requestAnimationFrame(animate);
-    controls.update(); // 更新控制器
-    renderer.render(scene, camera);
-  }
+    let eventObj = {
+        Fullscreen: function () {
+            // 全屏
+            document.body.requestFullscreen();
+            console.log("全屏")
+        },
 
-  // 窗口大小调整
-  window.addEventListener('resize', () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-  });
-});
+        ExitFullscreen: function () {
+            // 退出全屏
+            document.exitFullscreen();
+            console.log("退出全屏")
+        },
+    }
+
+    // 创建GUI
+    const gui = new GUI();
+    // 添加按钮
+    gui.add(eventObj, "Fullscreen").name("全屏");
+    gui.add(eventObj, "ExitFullscreen").name("退出全屏");
+    // 控制立方体的位置
+    let folder = gui.addFolder("立方体位置");
+    folder.open();
+    folder.add(cube.position, "x").min(-10).max(10).step(1).name("移动x");
+    folder.add(cube.position, "y").min(-10).max(10).step(1).name("移动y");
+    folder.add(cube.position, "z").min(-10).max(10).step(1).name("移动z");
+    // 控制立方体的缩放
+    gui.add(cube.scale, "x", 0, 10).name("缩放x");
+    // 切换父元素线框模式
+    gui.add(parentMaterial, "wireframe").name("父元素线框模式");
+
+    let colorParams = {
+        cubeColor: "#00ff00",
+    }
+    gui.addColor(colorParams, "cubeColor").name("立方体颜色").onChange((val) => {
+        cube.material.color.set(val);
+    });
+
+
 </script>
 
 <template>
-  <div v-if="loadingVisible" class="loading-screen">
-    <div class="progress-circle">
-      <div class="progress-circle-inner"
-        :style="{ background: 'conic-gradient(#00ff00 ' + loadingProgress + '%, #000000 ' + loadingProgress + '%)' }">
-      </div>
-      <div class="progress-circle-text">{{ loadingProgress.toFixed(2) }}%</div>
+    <div>
     </div>
-  </div>
-  <canvas ref="canvasRef"></canvas>
 </template>
 
 <style>
-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
 
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 24px;
-  z-index: 1000;
-}
 
-.progress-circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #000000;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.progress-circle-inner {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-
-.progress-circle-text {
-  position: absolute;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-}
 </style>
