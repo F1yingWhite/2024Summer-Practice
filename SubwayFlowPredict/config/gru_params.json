@@ -1,0 +1,9 @@
+{
+    "input_size": 13,
+    "output_size": 1,
+    "hidden_size": 64,
+    "num_layers": 1,
+    "bidirectional": "False",
+    "lr": 0.001,
+    "epochs": 150
+}
